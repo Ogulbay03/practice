@@ -1,0 +1,49 @@
+{% extends "layer.html" %}
+{% load utils %}
+
+{% block title %}
+    Tests
+{% endblock %}
+
+{% block content %}
+
+    {% if request.user.is_authenticated %}
+
+        {% if not exist %}
+            <form method="post">
+                {% csrf_token %}
+
+                <div>
+                    <h3>{{ test.title }}</h3>
+
+                    {% for question in test.questions.all %}
+                        <p>{{ question.title }}</p>
+
+                        {% for answer in question.answers.all %}
+                            <label>
+                                <input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}"> {{ answer.text }}
+                            </label>
+                        {% endfor %}
+
+
+                    {% endfor %}
+
+
+                </div>
+
+                <button>Submit</button>
+            </form>
+        {% else %}
+            <h4>Your results:</h4>
+            <p>Correct answers: {{ taker.correct_answers }}</p>
+            <p>Percent of correct answers: {{ percent }}%</p>
+            <p>Wrong answers: {{ taker.quiz.questions.count|subtract:taker.correct_answers }}</p>
+            <p>Date: {{ taker.timestamp|date:"d M Y" }}</p>
+
+        {% endif %}
+
+    {% else %}
+        You should login to take the test
+    {% endif %}
+
+{% endblock %}

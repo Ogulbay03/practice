@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}
+
+    {% endblock %}</title>
+</head>
+<body>
+
+<a href="{% url "home" %}">To Main Page</a>
+<br>
+{% if request.user.is_authenticated %}
+
+    Welcome back {{ request.user.username }}
+    <br>
+
+    <a href="{% url "logout" %}">Logout</a>
+    <br>
+{% else %}
+    <br>
+    <a href="{% url "login" %}">Login</a>
+    <br>
+    <a href="{% url "register" %}">Register</a>
+    <br>
+{% endif %}
+
+{% if messages %}
+    <div>
+        {% for message in messages %}
+            <div>
+                <div>
+                    {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% block content %}
+
+{% endblock %}
+</body>
+</html>

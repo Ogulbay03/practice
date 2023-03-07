@@ -1,0 +1,31 @@
+{% extends "layer.html" %}
+{% load utils %}
+
+{% block title %}
+    Tests
+{% endblock %}
+
+{% block content %}
+
+    {% if request.user.is_authenticated %}
+
+        {% for test in tests %}
+            <p> {{ test.title }}
+                <a href="{% url "test" test.id %}">{% if request|is_completed:test.id %}
+                    See results
+                {% else %}
+                    Take
+                {% endif %}</a>
+            </p>
+        {% endfor %}
+
+    {% else %}
+        You should login to take tests
+        {% for test in tests %}
+            <p>
+                {{ test.title }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
